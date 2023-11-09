@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct ContinueButton: View {
+    
+    @State var action : () -> Void
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        Button(action: {action()}, label: {
+            Text("CONTINUE")
+                .fontDesign(.rounded)
+                .fontWeight(.black)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: 15, maxHeight: 15)
+                .padding()
+                .background(.green)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        })
+        .padding()
     }
 }
 
 #Preview {
-    ContinueButton()
+    ContinueButton(action: {})
 }

@@ -8,26 +8,34 @@
 import SwiftUI
 
 struct SubTopicView: View {
+    @ObservedObject var allLessons: AllLessonsViewModel
+    var subTopic: SubTopic
+    var lessonID: UUID
+    var topicID: UUID
     
-    let subTopic : SubTopic
-    
+    @Environment(\.dismiss) var dismiss  // Use the environment dismiss action
+
     var body: some View {
-        List(subTopic.questions, id: \.id) { question in
-            NavigationLink(question.question) {
-                QuestionView(question : question)
+        VStack {
+            
+            Text(subTopic.name)
+            
+            ForEach(subTopic.questions, id: \.id) { question in
+                Text(question.question)
             }
+            Button("Complete SubTopic", action: {
+                allLessons.completeSubTopic(lessonID: lessonID, subTopicID: subTopic.id)
+                dismiss()
+            })
+            .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
     }
 }
 
-//#Preview {
-////    
-////    let lessons = LessonsManager.shared.allLessons
-////    let questions = lessons.map { Lesson in
-////        lesson.topics.map { topic in
-////            topic.questions
-////        }
-////    }
-//    
-//    QuestionsView(topic: LessonsManager.shared.allLessons.topics.randomElement()!)
-//}
+
+#Preview {
+    SubTopicView(allLessons: AllLessonsViewModel(), subTopic: SubTopic(name: "Test", questions: [], isSolved: false), lessonID: UUID(), topicID: UUID())
+}

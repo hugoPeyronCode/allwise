@@ -7,12 +7,27 @@
 
 import SwiftUI
 
-struct LessonsSelectionButton: View {
+struct LessonSelectionButton: View {
+    let title: String
+    let image: String
+    @Binding var isSelected: Bool
+    let action: () -> Void
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button(action: action) {
+            HStack {
+                Text(image)
+                Text(title)
+                    .foregroundColor(isSelected ? .blue : .primary)
+            }
+            .padding()
+            .background(isSelected ? Color.blue.opacity(0.2) : Color.clear)
+            .cornerRadius(8)
+        }
     }
 }
 
+
 #Preview {
-    LessonsSelectionButton()
+    LessonSelectionButton(title: "History", image: "📜", isSelected: .constant(true), action: {})
 }

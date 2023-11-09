@@ -10,6 +10,8 @@ import Foundation
 class AllLessonsViewModel: ObservableObject {
     
     @Published var nextPlayableTopicIndex: Int?
+    @Published var selectedSubTopic: SubTopic?
+
     
     // Fonction pour marquer un topic comme résolu
     func completeTopic(lessonID: UUID, topicID: UUID) {
@@ -18,7 +20,7 @@ class AllLessonsViewModel: ObservableObject {
             lessons[lessonIndex].topics[topicIndex].isSolved = true
         }
     }
-    
+
     // Fonction pour obtenir l'index du prochain sujet jouable
     func nextPlayableTopicIndex(lessonID: UUID) -> Int? {
         if let lessonIndex = lessons.firstIndex(where: { $0.id == lessonID }) {
@@ -31,6 +33,16 @@ class AllLessonsViewModel: ObservableObject {
     // Fonction pour obtenir les topics d'une leçon
     func topics(for lessonID: UUID) -> [Topic]? {
         return lessons.first { $0.id == lessonID }?.topics
+    }
+    
+    
+    // Function to select a subtopic for a given topic index
+    func selectSubTopic(for topicIndex: Int, in lessonID: UUID) {
+        if let lessonIndex = lessons.firstIndex(where: { $0.id == lessonID }),
+           let topic = lessons[lessonIndex].topics[safe: topicIndex],
+           let subTopic = topic.subtopics.first(where: { !$0.isSolved }) {
+            selectedSubTopic = subTopic
+        }
     }
     
     // Method to mark a subtopic as solved
@@ -59,6 +71,18 @@ class AllLessonsViewModel: ObservableObject {
         }
     }
     
+    // Add a method to find a lesson by its ID
+    func findLesson(by id: UUID) -> Lesson? {
+        lessons.first { $0.id == id }
+    }
+    
     // Data provisoires
     @Published var lessons: [Lesson] = mockDataForSubTopicView
+}
+
+
+extension Array {
+    subscript(safe index: Int) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
 }

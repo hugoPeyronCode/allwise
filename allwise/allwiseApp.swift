@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct allwiseApp: App {
+    
+    var allLessons = AllLessonsViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView(allLessons: allLessons)
         }
     }
 }
