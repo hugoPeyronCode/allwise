@@ -18,6 +18,13 @@ struct SubTopicView: View {
     var body: some View {
         VStack {
             
+            
+            TabView {
+                ForEach(subTopic.questions, id: \.id) { question in
+                    QuestionView(question: question)
+                }
+            }
+            
             Text(subTopic.name)
             
             ForEach(subTopic.questions, id: \.id) { question in
